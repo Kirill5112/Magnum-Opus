@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Magnum Opus</string>
+    <string name="input_title">Введите заголовок</string>
+    <string name="text_hint">Введите текст…</string>
+    <string name="btn_add">Добавить</string>
+    <string name="im_btn_add">кнопка добавления</string>
+    <string name="title_row_item">title</string>
+    <string name="mv_btn_more">кнопка больше действий</string>
+    <string name="many_text">Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста Много текста</string>
+    <string name="im_btn_del">Кнопка удаления</string>
+    <string name="m_btn_left">Кнопка очищения выделения</string>
+    <string name="rep_show_hide">кнопка: показать/скрыть</string>
+    <string name="btn_repeat">кнопка повторения</string>
+    <string name="rep_bar_hint">Оцените степень запоминания (0-10)</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="notification_header">Уведомления</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="post_notifications_title">Включить уведомления</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="btn_filter">кнопка для фильтрации материалов</string>
+    <string name="settings_label">Настройки</string>
+    <string name="addition_title">Добавить материал</string>
+</resources>
