@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +47,7 @@ class MaterialViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         null_binding = ActivityMaterialViewBinding.inflate(layoutInflater)
         enableEdgeToEdge()
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -73,6 +75,7 @@ class MaterialViewActivity : AppCompatActivity() {
                 applyWindowInsetsToRecyclerView(mvList, windowInsets)
             }
             mvBtnLeft.setOnClickListener{
+                pressAnimation(it)
                 val intent = Intent(this@MaterialViewActivity, MainActivity::class.java)
                 startActivity(intent)
             }

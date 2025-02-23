@@ -16,6 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import diploma.work.magnum_opus.MainActivity.Companion.pressAnimation
 import diploma.work.magnum_opus.databinding.ActivityRepetitionBinding
 import diploma.work.magnum_opus.db.DatabaseHelper
@@ -72,6 +73,7 @@ class RepetitionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         null_binding = ActivityRepetitionBinding.inflate(layoutInflater)
         enableEdgeToEdge()
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -92,6 +94,7 @@ class RepetitionActivity : AppCompatActivity() {
             repTitle.text = material.title
             repMultiLineTextView.text = material.content
             repShowHide.setOnClickListener {
+                pressAnimation(it)
                 isHide = isHide.not()
                 val src = if (isHide) R.drawable.ic_eye_crossed else R.drawable.ic_eye
                 repShowHide.setImageDrawable(
@@ -149,6 +152,11 @@ class RepetitionActivity : AppCompatActivity() {
                     setAlarm(this@RepetitionActivity, newRepetition.materialId, triggerTime)
                 }
                 db.close()
+                val intent = Intent(this@RepetitionActivity, MainActivity::class.java)
+                startActivity(intent)
+            }
+            repBtnLeft.setOnClickListener{
+                pressAnimation(it)
                 val intent = Intent(this@RepetitionActivity, MainActivity::class.java)
                 startActivity(intent)
             }

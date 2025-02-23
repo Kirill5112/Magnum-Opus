@@ -25,7 +25,7 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/m_btn_left"
+            android:contentDescription="@string/left_to_main"
 
             app:srcCompat="@drawable/ic_left" />
 

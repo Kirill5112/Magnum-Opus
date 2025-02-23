@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import diploma.work.magnum_opus.MainActivity.Companion.pressAnimation
 import diploma.work.magnum_opus.RepetitionActivity.Companion.setAlarm
 import diploma.work.magnum_opus.databinding.ActivityAdditionBinding
@@ -29,6 +30,7 @@ class AdditionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             val ime = insets.getInsets(WindowInsetsCompat.Type.ime())

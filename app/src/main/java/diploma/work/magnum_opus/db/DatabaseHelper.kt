@@ -4,9 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import diploma.work.magnum_opus.MainActivity.Companion.ID_SORT_DATE
+import diploma.work.magnum_opus.MainActivity.Companion.ID_SORT_NAME
+import diploma.work.magnum_opus.MainActivity.Companion.ID_SORT_TIMESTAMP
+import diploma.work.magnum_opus.item.ItemOfMaterialAdapter
 import diploma.work.magnum_opus.item.ItemOfRepetitionAdapter
 import diploma.work.magnum_opus.model.Repetition
 import diploma.work.magnum_opus.model.StudyMaterial
+import diploma.work.magnum_opus.settings.AppPreferences.completedIsHide
+import diploma.work.magnum_opus.settings.AppPreferences.sortId
+import diploma.work.magnum_opus.settings.AppPreferences.sortIsIncreasing
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", null, 4) {
 
@@ -190,67 +197,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         return repetition
     }
 
-    /**
-     * Метод получения списка всех материалов из БД Sqlite
-     *
-     * @return  возвращает список материлов
-     */
-    fun getAllMaterials(): MutableList<StudyMaterial> {
-        val db = readableDatabase
-        val query = "SELECT * FROM materials ORDER BY id"
-        val cursor = db.rawQuery(query, null)
-        val materialsList = mutableListOf<StudyMaterial>()
-        if (cursor.moveToFirst()) {
-            do {
-                val studyMaterial = StudyMaterial(
-                    id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                    title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
-                    content = cursor.getString(cursor.getColumnIndexOrThrow("content")),
-                    createdAt = cursor.getLong(cursor.getColumnIndexOrThrow("created_at")),
-                    isCompleted = cursor.getInt(cursor.getColumnIndexOrThrow("is_completed")) == 1
-                )
-                materialsList.add(studyMaterial)
-            } while (cursor.moveToNext())
-        }
-        cursor.close()
-        db.close()
-        return materialsList
-    }
-
-    /**
-     * Метод получения списка всех последних повторений из БД Sqlite.
-     * Список отсортирован по material_id
-     * @return  возвращает список повторений
-     */
-    fun getAllLastRepetition(): MutableList<Repetition> {
-        val db = readableDatabase
-        val query = """
-            SELECT r1.material_id, r1.number, r1.timestamp, r1.valuation
-            FROM repetitions r1
-            JOIN (
-                SELECT material_id, MAX(number) AS max_number
-                FROM repetitions
-                GROUP BY material_id
-            ) r2 ON r1.material_id = r2.material_id AND r1.number = r2.max_number;
-        """.trimIndent()
-        val cursor = db.rawQuery(query, null)
-        val repetitionList = mutableListOf<Repetition>()
-        if (cursor.moveToFirst()) {
-            do {
-                val repetition = Repetition(
-                    materialId = cursor.getLong(cursor.getColumnIndexOrThrow("material_id")),
-                    number = cursor.getInt(cursor.getColumnIndexOrThrow("number")),
-                    timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")),
-                    valuation = cursor.getInt(cursor.getColumnIndexOrThrow("valuation"))
-                )
-                repetitionList.add(repetition)
-            } while (cursor.moveToNext())
-        }
-        cursor.close()
-        db.close()
-        return repetitionList
-    }
-
     fun getRepetitionsList(materialId: Long): List<ItemOfRepetitionAdapter> {
         val db = readableDatabase
         val query = """
@@ -275,5 +221,41 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         cursor.close()
         db.close()
         return repetitionsList
+    }
+
+    fun getItemsOfMaterialAdapterList(context: Context): MutableList<ItemOfMaterialAdapter> {
+        val db = readableDatabase
+        val skeletQuery = """
+            SELECT m.id, m.title, r.timestamp, m.is_completed
+            FROM materials m JOIN repetitions r on m.id = r.material_id
+            WHERE r.number = (SELECT max(number) FROM repetitions where material_id = r.material_id)
+        """.trimIndent()
+        val queryWithWhere =
+            if (context.completedIsHide) "$skeletQuery AND m.is_completed = '0' ORDER BY" else "$skeletQuery ORDER BY"
+        val querySort = when (context.sortId) {
+            ID_SORT_DATE -> "$queryWithWhere m.id"
+            ID_SORT_NAME -> "$queryWithWhere m.title"
+            ID_SORT_TIMESTAMP -> "$queryWithWhere r.timestamp"
+            else -> {
+                throw IllegalStateException("sortId неверный")
+            }
+        }
+        val query = if (!context.sortIsIncreasing) "$querySort DESC" else querySort
+        val items = mutableListOf<ItemOfMaterialAdapter>()
+        val cursor = db.rawQuery(query, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val item = ItemOfMaterialAdapter(
+                    id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                    title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
+                    timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")),
+                    isCompleted = cursor.getInt(cursor.getColumnIndexOrThrow("is_completed")) == 1
+                )
+                items.add(item)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return items
     }
 }

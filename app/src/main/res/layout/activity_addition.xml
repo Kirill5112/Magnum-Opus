@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/title"
     tools:context=".AdditionActivity">
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/m_btn_left"
+            android:contentDescription="@string/left_to_main"
 
             app:srcCompat="@drawable/ic_left" />
 
@@ -50,62 +50,74 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/addition_title"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:fontFamily="@font/anuphan_medium"
-        android:hint="@string/input_title"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:textColor="@color/black"
-        android:textColorHint="@color/hint_color"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_container"
-        app:layout_constraintVertical_bias="0.03" />
-
-    <ScrollView
-        android:id="@+id/addition_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addition_title">
-
-        <EditText
-            android:id="@+id/multiLineEditText"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/anuphan_medium"
-            android:gravity="start|top"
-            android:hint="@string/text_hint"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:padding="16dp"
-            android:scrollbars="vertical"
-            android:textColor="@color/black"
-            android:textColorHint="@color/hint_color"
-            android:textSize="14sp"
-            tools:ignore="VisualLintLongText,VisualLintTextFieldSize" />
-    </ScrollView>
-
-
-    <ImageButton
-        android:id="@+id/btn_add"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/btn_add"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+        app:layout_constraintTop_toBottomOf="@+id/add_container">
+
+        <EditText
+            android:id="@+id/addition_title"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:fontFamily="@font/anuphan_medium"
+            android:hint="@string/input_title"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <ScrollView
+            android:id="@+id/addition_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/btn_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addition_title">
+
+            <EditText
+                android:id="@+id/multiLineEditText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/anuphan_medium"
+                android:gravity="start|top"
+                android:hint="@string/text_hint"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:padding="16dp"
+                android:scrollbars="vertical"
+                android:textColor="@color/black"
+                android:textColorHint="@color/hint_color"
+                android:textSize="14sp"
+                tools:ignore="VisualLintLongText,VisualLintTextFieldSize" />
+        </ScrollView>
+
+
+        <ImageButton
+            android:id="@+id/btn_add"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_add" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

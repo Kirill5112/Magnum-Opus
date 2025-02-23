@@ -107,6 +107,11 @@ class MaterialAdapter(
                         context.startActivity(intent)
                     }
                 }
+                btnRep.setOnLongClickListener{
+                    selectionMode(position)
+                    notifyItemChanged(position)
+                    true
+                }
             }
         }
     }

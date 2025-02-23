@@ -5,22 +5,59 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/title"
     tools:context=".RepetitionActivity">
 
-    <TextView
-        android:id="@+id/repTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/rep_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/anuphan_medium"
-        android:text="@string/title_row_item"
-        android:textColor="@color/black"
-        android:textSize="20sp"
+        android:background="#212020"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/rep_btn_left"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/left_to_main"
+
+            app:srcCompat="@drawable/ic_left" />
+
+        <TextView
+            android:id="@+id/repTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/anuphan_medium"
+            android:gravity="center"
+            android:text="@string/title_row_item"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        <ImageButton
+            android:id="@+id/repShowHide"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/rep_show_hide"
+            app:srcCompat="@drawable/ic_eye_crossed" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintTop_toBottomOf="@+id/rep_container">
+
 
     <ScrollView
         android:id="@+id/repSv"
@@ -28,9 +65,9 @@
         android:layout_height="0dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintHeight_percent="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repTitle">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/repMultiLineTextView"
@@ -63,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repSv"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.35" />
 
     <TextView
         android:id="@+id/repSbTv"
@@ -80,18 +117,6 @@
         app:layout_constraintTop_toBottomOf="@+id/repSv"
         app:layout_constraintVertical_bias="0.9"
         tools:ignore="HardcodedText" />
-
-    <ImageButton
-        android:id="@+id/repShowHide"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/rep_show_hide"
-        app:layout_constraintBottom_toBottomOf="@+id/repTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/repTitle"
-        app:layout_constraintTop_toTopOf="@+id/repTitle"
-        app:srcCompat="@drawable/ic_eye_crossed" />
 
     <ImageButton
         android:id="@+id/repBtnEnd"
@@ -117,5 +142,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repSb" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

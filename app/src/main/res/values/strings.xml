@@ -31,4 +31,5 @@
     <string name="btn_filter">кнопка для фильтрации материалов</string>
     <string name="settings_label">Настройки</string>
     <string name="addition_title">Добавить материал</string>
+    <string name="left_to_main">кнопка навигации в основное меню</string>
 </resources>
