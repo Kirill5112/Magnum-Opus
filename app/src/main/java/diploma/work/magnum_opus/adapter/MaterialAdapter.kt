@@ -142,19 +142,19 @@ class MaterialAdapter(
         }.start()
     }
 
-    private fun getTimerTime(timeInMillis: Long): String {
+    private fun getTimerTime(remainingTimeInMillis: Long): String {
         val now = System.currentTimeMillis()
         val currentCalendar = Calendar.getInstance().apply {
             this@apply.timeInMillis = now
         }
         val timerCalendar = Calendar.getInstance().apply {
-            this@apply.timeInMillis = now + timeInMillis
+            this@apply.timeInMillis = now + remainingTimeInMillis
         }
         return if (currentCalendar.get(Calendar.YEAR) == timerCalendar.get(Calendar.YEAR) &&
             currentCalendar.get(Calendar.DAY_OF_YEAR) == timerCalendar.get(Calendar.DAY_OF_YEAR)
         ) {
-            val hours = (timeInMillis / ((1000 * 60 * 59))) % 24
-            val minutes = ((timeInMillis / (1000 * 60)) + 1) % 60
+            val hours = (remainingTimeInMillis / ((1000 * 60 * 59))) % 24
+            val minutes = (((remainingTimeInMillis - 1) / (1000 * 60)) + 1) % 60
             String.format(Locale.getDefault(), "%02d:%02d", hours, minutes)
         } else {
             val day = timerCalendar.get(Calendar.DAY_OF_MONTH)

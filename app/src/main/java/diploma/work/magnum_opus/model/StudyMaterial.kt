@@ -10,6 +10,7 @@ package diploma.work.magnum_opus.model
  */
 data class StudyMaterial(
     val id: Long? = null,
+    val intervalsId: Int,
     val title: String,
     val content: String,
     val createdAt: Long,

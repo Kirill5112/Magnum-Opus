@@ -83,7 +83,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/btn_add"
+            app:layout_constraintBottom_toTopOf="@+id/add_spin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addition_title">
@@ -117,6 +117,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/ic_add" />
+
+        <Spinner
+            android:id="@+id/add_spin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/btn_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

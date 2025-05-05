@@ -85,7 +85,8 @@ class RepetitionActivity : AppCompatActivity() {
         val material = db.getMaterialById(id)!!
         val notificationManager = NotificationManagerCompat.from(this@RepetitionActivity)
         if (material.isCompleted) {
-            Toast.makeText(this, "последнее повторение уже было завершено", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "последнее повторение уже было завершено", Toast.LENGTH_SHORT)
+                .show()
             val intent1 = Intent(this@RepetitionActivity, MainActivity::class.java)
             startActivity(intent1)
         }
@@ -122,16 +123,14 @@ class RepetitionActivity : AppCompatActivity() {
 
                 }
             })
-            repBtnEnd.setOnClickListener { it ->
+            repBtnEnd.setOnClickListener {
                 pressAnimation(it)
                 val repetition = db.getLastRepetition(material.id!!)!!
                 repetition.timestamp = System.currentTimeMillis()
                 repetition.valuation = repSb.progress
                 db.updateRepetition(repetition)
-                val delays =
-                    this@RepetitionActivity.resources.getIntArray(R.array.repetition_delays)
-                        .map { it.toLong() }
-                if (repetition.number >= delays.size) {
+                val quantity = db.getQuantity(material.intervalsId)
+                if (repetition.number >= quantity) {
                     Toast.makeText(
                         this@RepetitionActivity,
                         "Последнее повторение завершено",
@@ -140,7 +139,8 @@ class RepetitionActivity : AppCompatActivity() {
                     material.isCompleted = true
                     db.updateMaterial(material)
                 } else {
-                    val delayInMillis = delays[repetition.number] * 60 * 1000
+                    val delay = db.getIntervalDelay(material.intervalsId, repetition.number + 1)
+                    val delayInMillis = delay * 60 * 1000
                     val triggerTime = System.currentTimeMillis() + delayInMillis
                     val newRepetition = Repetition(
                         materialId = repetition.materialId,
@@ -155,7 +155,7 @@ class RepetitionActivity : AppCompatActivity() {
                 val intent = Intent(this@RepetitionActivity, MainActivity::class.java)
                 startActivity(intent)
             }
-            repBtnLeft.setOnClickListener{
+            repBtnLeft.setOnClickListener {
                 pressAnimation(it)
                 val intent = Intent(this@RepetitionActivity, MainActivity::class.java)
                 startActivity(intent)

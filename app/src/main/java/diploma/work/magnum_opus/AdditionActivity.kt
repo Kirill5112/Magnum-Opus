@@ -3,6 +3,9 @@ package diploma.work.magnum_opus
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -70,10 +73,11 @@ class AdditionActivity : AppCompatActivity() {
                 val intent = Intent(this@AdditionActivity, MainActivity::class.java)
                 startActivity(intent)
             }
-            btnAdd.setOnClickListener { it ->
+            btnAdd.setOnClickListener {
                 pressAnimation(it)
                 val material = StudyMaterial(
                     id = materialEdit?.id,
+                    intervalsId = 1,
                     title = additionTitle.text.toString(),
                     content = multiLineEditText.text.toString(),
                     createdAt = System.currentTimeMillis(),
@@ -81,9 +85,7 @@ class AdditionActivity : AppCompatActivity() {
                 )
                 if (materialEdit == null) {
                     val id = db.saveMaterial(material)!!
-                    val delay =
-                        this@AdditionActivity.resources.getIntArray(R.array.repetition_delays)
-                            .map { it.toLong() }.first()
+                    val delay = db.getIntervalDelay(material.intervalsId, 1)
                     val delayInMillis = delay * 60 * 1000
                     val triggerTime = System.currentTimeMillis() + delayInMillis
                     setAlarm(this@AdditionActivity, id, triggerTime)
@@ -100,6 +102,32 @@ class AdditionActivity : AppCompatActivity() {
                 db.close()
                 val intent = Intent(this@AdditionActivity, MainActivity::class.java)
                 startActivity(intent)
+            }
+            val items = arrayOf("Значение 1", "Значение 2", "Значение 3", "Значение 4")
+            val spinAdapter = ArrayAdapter(
+                this@AdditionActivity,
+                android.R.layout.simple_spinner_item,
+                items
+            ).also {
+                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
+            addSpin.apply {
+                adapter = spinAdapter
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedItem = parent.getItemAtPosition(position).toString()
+                        // Здесь можно обработать выбранный элемент
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        // Обработка случая, когда ничего не выбрано
+                    }
+                }
             }
         }
     }

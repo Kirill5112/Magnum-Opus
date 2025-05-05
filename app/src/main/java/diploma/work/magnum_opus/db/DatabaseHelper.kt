@@ -15,7 +15,7 @@ import diploma.work.magnum_opus.settings.AppPreferences.completedIsHide
 import diploma.work.magnum_opus.settings.AppPreferences.sortId
 import diploma.work.magnum_opus.settings.AppPreferences.sortIsIncreasing
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", null, 4) {
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", null, 5) {
 
     override fun onConfigure(db: SQLiteDatabase) {
         super.onConfigure(db)
@@ -25,34 +25,76 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             """
-            CREATE TABLE materials (
+            CREATE TABLE material (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                intervals_id INTEGER,
                 title TEXT,
                 content TEXT,
                 created_at INTEGER,
-                is_completed INTEGER DEFAULT 0 CHECK (is_completed IN (0, 1))
+                is_completed INTEGER DEFAULT 0 CHECK (is_completed IN (0, 1)),
+                FOREIGN KEY(intervals_id) REFERENCES intervals(id)
             )
-        """
+                """.trimIndent()
         )
 
         db.execSQL(
             """
-            CREATE TABLE repetitions (
+            CREATE TABLE repetition (
                 material_id INTEGER,
                 number INTEGER,
                 timestamp INTEGER,
                 valuation INTEGER,
                 PRIMARY KEY (number, material_id),
-                FOREIGN KEY(material_id) REFERENCES materials(id) ON DELETE CASCADE
+                FOREIGN KEY(material_id) REFERENCES material(id) ON DELETE CASCADE
             )
-        """
+        """.trimIndent()
         )
+
+        db.execSQL(
+            """
+            CREATE TABLE intervals (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                "desc" TEXT,
+                quantity INTEGER NOT NULL CHECK(quantity > 0)
+            )
+                """.trimIndent()
+        )
+
+        db.execSQL("INSERT INTO intervals (title, quantity) VALUES ('Базовый', 4);")
+
+        db.execSQL(
+            """
+            CREATE TABLE interval (
+                id INTEGER,
+                number INTEGER NOT NULL CHECK(number > 0),
+                delay INTEGER NOT NULL,
+                FOREIGN KEY(id) REFERENCES intervals ON DELETE CASCADE,
+                PRIMARY KEY (number, id)
+            )
+                """.trimIndent()
+        )
+
+        db.execSQL(
+            """
+            CREATE TRIGGER check_interval_number
+            BEFORE INSERT ON interval
+            FOR EACH ROW
+            WHEN (SELECT quantity FROM intervals WHERE id = NEW.id) < NEW.number
+            BEGIN
+                SELECT RAISE(ABORT, 'Номер интервала не может превышать количество интерваллов!');
+            END;
+                """.trimIndent()
+        )
+
+        db.execSQL("INSERT INTO interval VALUES (1, 1, 1);")
+        db.execSQL("INSERT INTO interval VALUES (1, 2, 20);")
+        db.execSQL("INSERT INTO interval VALUES (1, 3, 480);")
+        db.execSQL("INSERT INTO interval VALUES (1, 4, 1440);")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        if (oldVersion < 4) {
-            db!!.execSQL("ALTER TABLE materials ADD COLUMN is_completed INTEGER DEFAULT 0 CHECK (is_completed IN (0, 1))")
-        }
+
     }
 
     /**
@@ -67,7 +109,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("title", material.title)
         values.put("content", material.content)
         values.put("created_at", material.createdAt)
-        val newRowId = db.insert("materials", null, values)
+        values.put("intervals_id", 1)
+        val newRowId = db.insert("material", null, values)
         db.close()
         return if (newRowId == -1L) null else newRowId
     }
@@ -85,7 +128,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("number", repetition.number)
         values.put("timestamp", repetition.timestamp)
         values.put("valuation", repetition.valuation)
-        val newRowId = db.insert("repetitions", null, values)
+        val newRowId = db.insert("repetition", null, values)
         db.close()
         return if (newRowId == -1L) null else newRowId
     }
@@ -107,7 +150,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("content", material.content)
         val isCompleted = if (material.isCompleted) 1 else 0
         values.put("is_completed", isCompleted)
-        val rows = db.update("materials", values, "id = ?", arrayOf("${material.id}"))
+        val rows = db.update("material", values, "id = ?", arrayOf("${material.id}"))
         db.close()
         return rows == 1
     }
@@ -124,7 +167,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("timestamp", repetition.timestamp)
         values.put("valuation", repetition.valuation)
         val rows = db.update(
-            "repetitions",
+            "repetition",
             values,
             "material_id = ? AND number = ?",
             arrayOf("${repetition.materialId}", "${repetition.number}")
@@ -135,7 +178,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
 
     fun deleteMaterial(id: Long) {
         val db = this.writableDatabase
-        db.delete("materials", "id = ?", arrayOf("$id"))
+        db.delete("material", "id = ?", arrayOf("$id"))
         db.close()
     }
 
@@ -147,12 +190,13 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
      */
     fun getMaterialById(id: Long): StudyMaterial? {
         val db = readableDatabase
-        val query = "SELECT * FROM materials WHERE id = ?"
+        val query = "SELECT * FROM material WHERE id = ?"
         val cursor = db.rawQuery(query, arrayOf("$id"))
 
         val studyMaterial: StudyMaterial? = if (cursor.moveToFirst()) {
             StudyMaterial(
                 id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                intervalsId = cursor.getInt(cursor.getColumnIndexOrThrow("intervals_id")),
                 title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
                 content = cursor.getString(cursor.getColumnIndexOrThrow("content")),
                 createdAt = cursor.getLong(cursor.getColumnIndexOrThrow("created_at")),
@@ -177,7 +221,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         val cursor = db.rawQuery(
             """
         SELECT * 
-        FROM repetitions 
+        FROM repetition 
         WHERE material_id = ? 
         ORDER BY number DESC 
         LIMIT 1
@@ -200,7 +244,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
     fun getRepetitionsList(materialId: Long): List<ItemOfRepetitionAdapter> {
         val db = readableDatabase
         val query = """
-            SELECT * FROM repetitions
+            SELECT * FROM repetition
             WHERE material_id = ?
             GROUP BY number
             """.trimIndent()
@@ -227,8 +271,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         val db = readableDatabase
         val skeletQuery = """
             SELECT m.id, m.title, r.timestamp, m.is_completed
-            FROM materials m JOIN repetitions r on m.id = r.material_id
-            WHERE r.number = (SELECT max(number) FROM repetitions where material_id = r.material_id)
+            FROM material m JOIN repetition r on m.id = r.material_id
+            WHERE r.number = (SELECT max(number) FROM repetition where material_id = r.material_id)
         """.trimIndent()
         val queryWithWhere =
             if (context.completedIsHide) "$skeletQuery AND m.is_completed = '0' ORDER BY" else "$skeletQuery ORDER BY"
@@ -257,5 +301,41 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         cursor.close()
         db.close()
         return items
+    }
+
+    fun getIntervalDelay(id: Int, number: Int): Long {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT delay 
+        FROM interval 
+        WHERE id = ? AND number = ?
+        """,
+            arrayOf("$id", "$number")
+        )
+        val delay = if (cursor.moveToFirst()) {
+            cursor.getLong(cursor.getColumnIndexOrThrow("delay"))
+        } else null
+        cursor.close()
+        db.close()
+        return delay!!
+    }
+
+    fun getQuantity(id: Int): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            """
+        SELECT quantity 
+        FROM intervals 
+        WHERE id = ?
+        """,
+            arrayOf("$id")
+        )
+        val quantity = if (cursor.moveToFirst()) {
+            cursor.getInt(cursor.getColumnIndexOrThrow("quantity"))
+        } else null
+        cursor.close()
+        db.close()
+        return quantity!!
     }
 }
