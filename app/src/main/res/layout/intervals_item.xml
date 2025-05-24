@@ -9,42 +9,40 @@
     android:background="@color/white"
     android:gravity="center_vertical">
 
+    <ImageButton
+        android:id="@+id/intervalsBtn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/btn_repeat"
+        android:gravity="center_horizontal"
+        android:src="@drawable/ic_time"
+        tools:ignore="TouchTargetSizeCheck" />
+
     <TextView
-        android:id="@+id/itemTextView"
+        android:id="@+id/intervalsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:fontFamily="@font/anuphan_medium"
         android:gravity="start"
-        android:paddingStart="10dp"
+        android:paddingStart="5dp"
         android:paddingEnd="0dp"
         android:text="@string/title_row_item"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/itemTimerTV"
+        android:id="@+id/intervalsQuantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/anuphan_medium"
         android:gravity="center_horizontal"
-        android:text="таймер"
+        android:text="quantity"
         android:textColor="@color/black"
-
         android:textSize="18sp"
         android:visibility="visible"
         tools:ignore="HardcodedText" />
-
-    <ImageButton
-        android:id="@+id/item_btn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/btn_repeat"
-        android:gravity="center_horizontal"
-        android:src="@drawable/ic_repeat2"
-        android:visibility="gone" />
 
 </LinearLayout>

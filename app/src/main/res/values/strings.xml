@@ -30,6 +30,9 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="btn_filter">кнопка для фильтрации материалов</string>
     <string name="settings_label">Настройки</string>
+    <string name="intervals_label">Интервалы</string>
     <string name="addition_title">Добавить материал</string>
     <string name="left_to_main">кнопка навигации в основное меню</string>
+    <string name="inter_title">Интервалы повторения</string>
+    <string name="im_btn_add_inter">Кнопка добавления интервала</string>
 </resources>

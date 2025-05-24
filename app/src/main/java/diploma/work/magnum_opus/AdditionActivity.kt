@@ -16,6 +16,7 @@ import diploma.work.magnum_opus.MainActivity.Companion.pressAnimation
 import diploma.work.magnum_opus.RepetitionActivity.Companion.setAlarm
 import diploma.work.magnum_opus.databinding.ActivityAdditionBinding
 import diploma.work.magnum_opus.db.DatabaseHelper
+import diploma.work.magnum_opus.model.Intervals
 import diploma.work.magnum_opus.model.Repetition
 import diploma.work.magnum_opus.model.StudyMaterial
 
@@ -47,6 +48,7 @@ class AdditionActivity : AppCompatActivity() {
         }
 
         val db = DatabaseHelper(this@AdditionActivity)
+        var intervalsId = 1L
         val idEdit = intent.getLongExtra("EXTRA_ID_LONG", -1L)
         val materialEdit: StudyMaterial? = if (idEdit != -1L)
             db.getMaterialById(idEdit)
@@ -77,7 +79,7 @@ class AdditionActivity : AppCompatActivity() {
                 pressAnimation(it)
                 val material = StudyMaterial(
                     id = materialEdit?.id,
-                    intervalsId = 1,
+                    intervalsId = intervalsId,
                     title = additionTitle.text.toString(),
                     content = multiLineEditText.text.toString(),
                     createdAt = System.currentTimeMillis(),
@@ -103,11 +105,11 @@ class AdditionActivity : AppCompatActivity() {
                 val intent = Intent(this@AdditionActivity, MainActivity::class.java)
                 startActivity(intent)
             }
-            val items = arrayOf("Значение 1", "Значение 2", "Значение 3", "Значение 4")
+            val listIntervals = db.getIntervalsList()
             val spinAdapter = ArrayAdapter(
                 this@AdditionActivity,
                 android.R.layout.simple_spinner_item,
-                items
+                listIntervals
             ).also {
                 it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
@@ -120,12 +122,12 @@ class AdditionActivity : AppCompatActivity() {
                         position: Int,
                         id: Long
                     ) {
-                        val selectedItem = parent.getItemAtPosition(position).toString()
-                        // Здесь можно обработать выбранный элемент
+                        val selectedItem = parent.getItemAtPosition(position) as Intervals
+                        intervalsId = selectedItem.id
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>) {
-                        // Обработка случая, когда ничего не выбрано
+
                     }
                 }
             }

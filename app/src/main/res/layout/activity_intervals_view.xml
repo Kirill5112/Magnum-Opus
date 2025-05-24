@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#212020"
+    android:paddingTop="0dp"
+    tools:context=".IntervalsViewActivity">
+
+    <LinearLayout
+        android:id="@+id/intervals_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#212020"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/intervals_view_btn_left"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/left_to_main"
+            app:srcCompat="@drawable/ic_left" />
+
+        <TextView
+            android:id="@+id/intervals_view_Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/anuphan_medium"
+            android:gravity="center"
+            android:text="@string/title_row_item"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+        <ImageButton
+            android:id="@+id/intervals_view_btn_new"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/im_btn_add"
+            app:srcCompat="@drawable/ic_plus_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="30dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/intervals_view_container">
+
+        <TextView
+            android:id="@+id/inter_view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/anuphan_medium"
+            android:gravity="center"
+            android:text="0 интервалов"
+            android:textColor="@color/material_dynamic_secondary50"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/inter_view_btn_new"
+            android:layout_width="48dp"
+            android:layout_height="64dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/im_btn_add_inter"
+            app:srcCompat="@drawable/ic_plus_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/anuphan_medium"
+            android:gravity="center"
+            android:text="Добавить"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inter_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#FFF"
+        android:contentDescription="Окно с интервалами"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_container"
+        tools:ignore="HardcodedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import diploma.work.magnum_opus.MainActivity.Companion.ID_SORT_NAME
 import diploma.work.magnum_opus.MainActivity.Companion.ID_SORT_TIMESTAMP
 import diploma.work.magnum_opus.item.ItemOfMaterialAdapter
 import diploma.work.magnum_opus.item.ItemOfRepetitionAdapter
+import diploma.work.magnum_opus.model.Intervals
 import diploma.work.magnum_opus.model.Repetition
 import diploma.work.magnum_opus.model.StudyMaterial
 import diploma.work.magnum_opus.settings.AppPreferences.completedIsHide
@@ -196,7 +197,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         val studyMaterial: StudyMaterial? = if (cursor.moveToFirst()) {
             StudyMaterial(
                 id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                intervalsId = cursor.getInt(cursor.getColumnIndexOrThrow("intervals_id")),
+                intervalsId = cursor.getLong(cursor.getColumnIndexOrThrow("intervals_id")),
                 title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
                 content = cursor.getString(cursor.getColumnIndexOrThrow("content")),
                 createdAt = cursor.getLong(cursor.getColumnIndexOrThrow("created_at")),
@@ -303,7 +304,27 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         return items
     }
 
-    fun getIntervalDelay(id: Int, number: Int): Long {
+    fun getIntervalsObject(id: Long): Intervals?{
+        val db = readableDatabase
+        val query = "SELECT * FROM intervals WHERE id = ?"
+        val cursor = db.rawQuery(query, arrayOf("$id"))
+
+        val intervals: Intervals? = if (cursor.moveToFirst()) {
+            Intervals(
+                id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
+                desc = cursor.getString(cursor.getColumnIndexOrThrow("desc")),
+                quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"))
+            )
+        } else {
+            null
+        }
+        cursor.close()
+        db.close()
+        return intervals
+    }
+
+    fun getIntervalDelay(id: Long, number: Int): Long {
         val db = readableDatabase
         val cursor = db.rawQuery(
             """
@@ -321,7 +342,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         return delay!!
     }
 
-    fun getQuantity(id: Int): Int {
+    fun getQuantity(id: Long): Int {
         val db = readableDatabase
         val cursor = db.rawQuery(
             """
@@ -337,5 +358,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         cursor.close()
         db.close()
         return quantity!!
+    }
+
+    fun getIntervalsList(): List<Intervals> {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM intervals", arrayOf())
+        val list = mutableListOf<Intervals>()
+        if (cursor.moveToFirst()) {
+            do {
+                val item = Intervals(
+                    id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                    title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
+                    desc = cursor.getString(cursor.getColumnIndexOrThrow("desc")),
+                    quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"))
+                )
+                list.add(item)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return list
     }
 }
