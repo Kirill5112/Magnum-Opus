@@ -70,7 +70,7 @@ class IntervalsViewActivity : AppCompatActivity(), InterActionListener {
                     notifyItemInserted(delays.size - 1)
                     notifyItemChanged(delays.size - 2)
                 }
-                db.saveInterval(id, delays.size, 30L)
+                db.saveInter(id, delays.size, 30L)
                 intervals.quantity = delays.size
                 interViewCount.text = getDeclinationText(delays.size)
             }
@@ -104,6 +104,6 @@ class IntervalsViewActivity : AppCompatActivity(), InterActionListener {
     override fun saveInter(number: Int, delay: Long) {
         delays[number - 1] = delay
         interAdapter.notifyItemChanged(number - 1)
-        db.saveInterval(id, number, delay)
+        db.saveInter(id, number, delay)
     }
 }

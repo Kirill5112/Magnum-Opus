@@ -122,7 +122,6 @@ class MaterialAdapter(
         return items.filterIndexed { index, _ -> selectedItems.contains(index) }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun clearSelection() {
         selectedItems.clear()
         isSelectionMode = false

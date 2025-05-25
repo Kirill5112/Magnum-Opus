@@ -63,12 +63,14 @@ class InterAdapter(
         holder.apply {
             text.text = getDeclinationText(item)
             val ems = text.text.toString().split(" ")
-            val pos = when (ems[1]) {
+            val pos = if (ems.size == 2) when (ems[1]) {
                 "минута", "минут", "минуты" -> 0
                 "час", "часов", "часа" -> 1
                 "день", "дней", "дня" -> 2
                 else -> 3
             }
+            else
+                0
             deleteBtn.setOnClickListener {
                 pressAnimation(it)
                 listener.deleteInter(adapterPosition + 1)
@@ -81,7 +83,7 @@ class InterAdapter(
                 if (!isEditMode) {
                     pressAnimation(it)
                     invertVisibility(holder)
-                    number.setText(ems[0])
+                    number.setText(if (ems.size == 2) ems[0] else "0")
                     spinner.setSelection(pos)
                     isEditMode = true
                 }

@@ -26,6 +26,30 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
             """
+            CREATE TABLE intervals (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                "desc" TEXT,
+                quantity INTEGER DEFAULT 0 CHECK(quantity >= 0)
+            )
+                """.trimIndent()
+        )
+
+        db.execSQL("INSERT INTO intervals (title) VALUES ('Базовый');")
+
+        db.execSQL(
+            """
+            CREATE TABLE interval (
+                id INTEGER,
+                number INTEGER NOT NULL CHECK(number > 0),
+                delay INTEGER NOT NULL,
+                FOREIGN KEY(id) REFERENCES intervals ON DELETE CASCADE,
+                PRIMARY KEY (number, id)
+            )
+                """.trimIndent()
+        )
+        db.execSQL(
+            """
             CREATE TABLE material (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 intervals_id INTEGER,
@@ -49,31 +73,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
                 FOREIGN KEY(material_id) REFERENCES material(id) ON DELETE CASCADE
             )
         """.trimIndent()
-        )
-
-        db.execSQL(
-            """
-            CREATE TABLE intervals (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title TEXT NOT NULL,
-                "desc" TEXT,
-                quantity INTEGER DEFAULT 0 CHECK(quantity >= 0)
-            )
-                """.trimIndent()
-        )
-
-        db.execSQL("INSERT INTO intervals (title) VALUES ('Базовый');")
-
-        db.execSQL(
-            """
-            CREATE TABLE interval (
-                id INTEGER,
-                number INTEGER NOT NULL CHECK(number > 0),
-                delay INTEGER NOT NULL,
-                FOREIGN KEY(id) REFERENCES intervals ON DELETE CASCADE,
-                PRIMARY KEY (number, id)
-            )
-                """.trimIndent()
         )
 
         db.execSQL(
@@ -197,7 +196,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
     fun deleteMaterial(id: Long) {
         val db = this.writableDatabase
         db.delete("material", "id = ?", arrayOf("$id"))
-
     }
 
     /**
@@ -358,10 +356,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
     fun deleteIntervalDelay(id: Long, number: Int) {
         val db = writableDatabase
         db.delete("interval", "id = ? AND number = ?", arrayOf("$id", "$number"))
-
     }
 
-    fun saveInterval(id: Long, number: Int, delay: Long) {
+    fun saveInter(id: Long, number: Int, delay: Long) {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put("delay", delay)
@@ -371,7 +368,21 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             db.insert("interval", null, values)
         } else
             db.update("interval", values, "id = ? AND number = ?", arrayOf("$id", "$number"))
+    }
 
+    fun saveIntervals(title: String, desc: String?): Long? {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put("title", title)
+        if (desc != null)
+            values.put("desc", desc)
+        val newRowId = db.insert("intervals", null, values)
+        return if (newRowId == -1L) null else newRowId
+    }
+
+    fun deleteIntervals(id: Long) {
+        val db = this.writableDatabase
+        db.delete("intervals", "id = ?", arrayOf("$id"))
     }
 
     fun getQuantity(id: Long): Int {
@@ -392,9 +403,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         return quantity!!
     }
 
-    fun getIntervalsList(): List<Intervals> {
+    fun getIntervalsList(): MutableList<Intervals> {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM intervals", arrayOf())
+        val cursor =
+            db.rawQuery("SELECT * FROM intervals", arrayOf())
         val list = mutableListOf<Intervals>()
         if (cursor.moveToFirst()) {
             do {
