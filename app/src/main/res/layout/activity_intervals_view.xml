@@ -41,12 +41,13 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
         <ImageButton
-            android:id="@+id/intervals_view_btn_new"
+            android:id="@+id/intervals_view_info"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/im_btn_add"
-            app:srcCompat="@drawable/ic_plus_white" />
+            android:contentDescription="кнопка инфо"
+            app:srcCompat="@drawable/ic_info"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <LinearLayout
@@ -77,6 +78,7 @@
             android:id="@+id/inter_view_btn_new"
             android:layout_width="48dp"
             android:layout_height="64dp"
+            android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/im_btn_add_inter"
             app:srcCompat="@drawable/ic_plus_black" />

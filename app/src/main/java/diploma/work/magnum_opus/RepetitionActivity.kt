@@ -139,7 +139,7 @@ class RepetitionActivity : AppCompatActivity() {
                     material.isCompleted = true
                     db.updateMaterial(material)
                 } else {
-                    val delay = db.getIntervalDelay(material.intervalsId, repetition.number + 1)
+                    val delay = db.getIntervalDelay(material.intervalsId, repetition.number + 1)!!
                     val delayInMillis = delay * 60 * 1000
                     val triggerTime = System.currentTimeMillis() + delayInMillis
                     val newRepetition = Repetition(

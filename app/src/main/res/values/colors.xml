@@ -4,5 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="hint_color">#757575</color>
     <color name="title">#212020</color>
-    <color name="light_blue">#052392</color>
+    <color name="light_blue_text">#052392</color>
+    <color name="light_blue">#BA9DD2F0</color>
+    <color name="light_purple">#E6CAC2E6</color>
+    <color name="light_purple_text">#F23A276A</color>
+    <color name="light_pink">#D9F6CFEC</color>
+    <color name="light_pink_text">#F35B2042</color>
+    <color name="light_green">#D9C1EBB0</color>
+    <color name="light_green_text">#F224490C</color>
 </resources>

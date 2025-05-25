@@ -87,7 +87,7 @@ class AdditionActivity : AppCompatActivity() {
                 )
                 if (materialEdit == null) {
                     val id = db.saveMaterial(material)!!
-                    val delay = db.getIntervalDelay(material.intervalsId, 1)
+                    val delay = db.getIntervalDelay(material.intervalsId, 1)!!
                     val delayInMillis = delay * 60 * 1000
                     val triggerTime = System.currentTimeMillis() + delayInMillis
                     setAlarm(this@AdditionActivity, id, triggerTime)

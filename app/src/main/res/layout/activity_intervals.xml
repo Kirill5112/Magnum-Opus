@@ -51,7 +51,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/inter_list"
+        android:id="@+id/intervals_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#E2E0E0"

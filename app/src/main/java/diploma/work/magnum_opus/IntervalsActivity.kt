@@ -36,7 +36,7 @@ class IntervalsActivity : AppCompatActivity() {
         val items = db.getIntervalsList()
         val intervalsAdapter = IntervalsAdapter(items)
         with(binding) {
-            interList.apply {
+            intervalsList.apply {
                 layoutManager = LinearLayoutManager(this@IntervalsActivity)
                 adapter = intervalsAdapter
             }

@@ -4,7 +4,7 @@ data class Intervals(
     val id: Long,
     val title: String,
     val desc: String?,
-    val quantity: Int
+    var quantity: Int
 ) {
     override fun toString() = title
 }

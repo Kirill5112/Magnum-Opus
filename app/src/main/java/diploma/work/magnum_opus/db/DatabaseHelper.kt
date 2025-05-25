@@ -16,7 +16,7 @@ import diploma.work.magnum_opus.settings.AppPreferences.completedIsHide
 import diploma.work.magnum_opus.settings.AppPreferences.sortId
 import diploma.work.magnum_opus.settings.AppPreferences.sortIsIncreasing
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", null, 5) {
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", null, 7) {
 
     override fun onConfigure(db: SQLiteDatabase) {
         super.onConfigure(db)
@@ -57,12 +57,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 "desc" TEXT,
-                quantity INTEGER NOT NULL CHECK(quantity > 0)
+                quantity INTEGER DEFAULT 0 CHECK(quantity >= 0)
             )
                 """.trimIndent()
         )
 
-        db.execSQL("INSERT INTO intervals (title, quantity) VALUES ('Базовый', 4);")
+        db.execSQL("INSERT INTO intervals (title) VALUES ('Базовый');")
 
         db.execSQL(
             """
@@ -78,12 +78,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
 
         db.execSQL(
             """
-            CREATE TRIGGER check_interval_number
-            BEFORE INSERT ON interval
+            CREATE TRIGGER after_interval_insert
+            AFTER INSERT ON interval
             FOR EACH ROW
-            WHEN (SELECT quantity FROM intervals WHERE id = NEW.id) < NEW.number
             BEGIN
-                SELECT RAISE(ABORT, 'Номер интервала не может превышать количество интерваллов!');
+                UPDATE intervals
+                SET quantity = quantity + 1
+                WHERE id = NEW.id;
+            END;
+                """.trimIndent()
+        )
+        db.execSQL(
+            """
+            CREATE TRIGGER after_interval_delete
+            AFTER DELETE ON interval
+            FOR EACH ROW
+            BEGIN
+                UPDATE intervals
+                SET quantity = quantity - 1
+                WHERE id = OLD.id;
             END;
                 """.trimIndent()
         )
@@ -95,7 +108,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+        db!!.execSQL("DROP TABLE material")
+        db.execSQL("DROP TABLE repetition")
+        db.execSQL("DROP TABLE intervals")
+        db.execSQL("DROP TABLE interval")
+        onCreate(db)
     }
 
     /**
@@ -110,9 +127,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("title", material.title)
         values.put("content", material.content)
         values.put("created_at", material.createdAt)
-        values.put("intervals_id", 1)
+        values.put("intervals_id", material.intervalsId)
         val newRowId = db.insert("material", null, values)
-        db.close()
+
         return if (newRowId == -1L) null else newRowId
     }
 
@@ -130,7 +147,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("timestamp", repetition.timestamp)
         values.put("valuation", repetition.valuation)
         val newRowId = db.insert("repetition", null, values)
-        db.close()
+
         return if (newRowId == -1L) null else newRowId
     }
 
@@ -152,7 +169,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         val isCompleted = if (material.isCompleted) 1 else 0
         values.put("is_completed", isCompleted)
         val rows = db.update("material", values, "id = ?", arrayOf("${material.id}"))
-        db.close()
+
         return rows == 1
     }
 
@@ -173,14 +190,14 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             "material_id = ? AND number = ?",
             arrayOf("${repetition.materialId}", "${repetition.number}")
         )
-        db.close()
+
         return rows == 1
     }
 
     fun deleteMaterial(id: Long) {
         val db = this.writableDatabase
         db.delete("material", "id = ?", arrayOf("$id"))
-        db.close()
+
     }
 
     /**
@@ -207,7 +224,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             null
         }
         cursor.close()
-        db.close()
+
         return studyMaterial
     }
 
@@ -238,7 +255,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             )
         } else null
         cursor.close()
-        db.close()
+
         return repetition
     }
 
@@ -264,7 +281,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             } while (cursor.moveToNext())
         }
         cursor.close()
-        db.close()
         return repetitionsList
     }
 
@@ -300,11 +316,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             } while (cursor.moveToNext())
         }
         cursor.close()
-        db.close()
         return items
     }
 
-    fun getIntervalsObject(id: Long): Intervals?{
+    fun getIntervalsObject(id: Long): Intervals? {
         val db = readableDatabase
         val query = "SELECT * FROM intervals WHERE id = ?"
         val cursor = db.rawQuery(query, arrayOf("$id"))
@@ -320,11 +335,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             null
         }
         cursor.close()
-        db.close()
         return intervals
     }
 
-    fun getIntervalDelay(id: Long, number: Int): Long {
+    fun getIntervalDelay(id: Long, number: Int): Long? {
         val db = readableDatabase
         val cursor = db.rawQuery(
             """
@@ -338,8 +352,26 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             cursor.getLong(cursor.getColumnIndexOrThrow("delay"))
         } else null
         cursor.close()
-        db.close()
-        return delay!!
+        return delay
+    }
+
+    fun deleteIntervalDelay(id: Long, number: Int) {
+        val db = writableDatabase
+        db.delete("interval", "id = ? AND number = ?", arrayOf("$id", "$number"))
+
+    }
+
+    fun saveInterval(id: Long, number: Int, delay: Long) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put("delay", delay)
+        if (getIntervalDelay(id, number) == null) {
+            values.put("id", id)
+            values.put("number", number)
+            db.insert("interval", null, values)
+        } else
+            db.update("interval", values, "id = ? AND number = ?", arrayOf("$id", "$number"))
+
     }
 
     fun getQuantity(id: Long): Int {
@@ -356,7 +388,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             cursor.getInt(cursor.getColumnIndexOrThrow("quantity"))
         } else null
         cursor.close()
-        db.close()
+
         return quantity!!
     }
 
@@ -376,7 +408,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
             } while (cursor.moveToNext())
         }
         cursor.close()
-        db.close()
+
         return list
+    }
+
+    fun getDelayList(id: Long): MutableList<Long> {
+        val db = readableDatabase
+        val cursor =
+            db.rawQuery(
+                "SELECT delay FROM interval WHERE id = ? ORDER BY number",
+                arrayOf("$id")
+            )
+        val delays = mutableListOf<Long>()
+        if (cursor.moveToFirst()) {
+            do {
+                val delay = cursor.getLong(cursor.getColumnIndexOrThrow("delay"))
+                delays.add(delay)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return delays
     }
 }
