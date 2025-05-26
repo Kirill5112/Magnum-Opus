@@ -81,11 +81,11 @@ class InterAdapter(
                 deleteBtn.visibility = View.VISIBLE
             editBtn.setOnClickListener {
                 if (!isEditMode) {
+                    isEditMode = true
                     pressAnimation(it)
                     invertVisibility(holder)
                     number.setText(if (ems.size == 2) ems[0] else "0")
                     spinner.setSelection(pos)
-                    isEditMode = true
                 }
             }
             itemView.apply {

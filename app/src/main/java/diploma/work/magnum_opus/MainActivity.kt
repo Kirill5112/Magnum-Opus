@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity(), ListActionListener {
                 btnNew.visibility = View.GONE
                 mainTitle.visibility = View.GONE
                 btnFilter.visibility = View.GONE
+                btnMore.visibility= View.GONE
                 btnDel.visibility = View.VISIBLE
                 btnLeft.visibility = View.VISIBLE
                 mainCounter.visibility = View.VISIBLE
@@ -162,6 +163,7 @@ class MainActivity : AppCompatActivity(), ListActionListener {
                 btnNew.visibility = View.VISIBLE
                 mainTitle.visibility = View.VISIBLE
                 btnFilter.visibility = View.VISIBLE
+                btnMore.visibility= View.VISIBLE
                 btnDel.visibility = View.GONE
                 btnLeft.visibility = View.GONE
                 mainCounter.visibility = View.GONE
