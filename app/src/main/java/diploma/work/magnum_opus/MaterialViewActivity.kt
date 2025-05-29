@@ -65,7 +65,8 @@ class MaterialViewActivity : AppCompatActivity() {
         val items = db.getRepetitionsList(id)
         val windowInsets = ViewCompat.getRootWindowInsets(binding.main)
         with(binding) {
-            matViewTitle.text = material.title
+            if (material.title.isNotBlank())
+                matViewTitle.text = material.title
             more.setOnClickListener {
                 pressAnimation(it)
                 showPopupMenu(more, material)

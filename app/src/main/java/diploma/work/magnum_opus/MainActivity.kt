@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity(), ListActionListener {
         const val ID_SORT_DATE = 3
         const val ID_SORT_NAME = 4
         const val ID_SORT_TIMESTAMP = 5
-        private const val ID_SETTINGS = 6
+//        private const val ID_SETTINGS = 6
         private const val ID_INTERVALS = 7
 
         fun pressAnimation(view: View) {
@@ -265,14 +265,14 @@ class MainActivity : AppCompatActivity(), ListActionListener {
         view: View
     ): PopupMenu {
         val popupMenu = PopupMenu(view.context, view)
-        popupMenu.menu.add(2, ID_SETTINGS, Menu.NONE, getString(R.string.settings_label))
+//        popupMenu.menu.add(2, ID_SETTINGS, Menu.NONE, getString(R.string.settings_label))
         popupMenu.menu.add(2, ID_INTERVALS, Menu.NONE, getString(R.string.intervals_label))
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                ID_SETTINGS -> {
-                    val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-                    startActivity(intent)
-                }
+//                ID_SETTINGS -> {
+//                    val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+//                    startActivity(intent)
+//                }
 
                 ID_INTERVALS -> {
                     val intent = Intent(this@MainActivity, IntervalsActivity::class.java)

@@ -380,9 +380,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         return if (newRowId == -1L) null else newRowId
     }
 
-    fun deleteIntervals(id: Long) {
+    fun deleteIntervals(id: Long): Boolean {
         val db = this.writableDatabase
-        db.delete("intervals", "id = ?", arrayOf("$id"))
+        val cursor = db.rawQuery(
+            """
+            SELECT *
+            FROM material
+            WHERE intervals_id = ?
+        """.trimIndent(),
+            arrayOf("$id")
+        )
+        if (cursor.moveToFirst()) {
+            cursor.close()
+            return false
+        } else {
+            cursor.close()
+            return (db.delete("intervals", "id = ?", arrayOf("$id")) == 1)
+        }
     }
 
     fun getQuantity(id: Long): Int {
@@ -392,7 +406,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         SELECT quantity 
         FROM intervals 
         WHERE id = ?
-        """,
+        """.trimIndent(),
             arrayOf("$id")
         )
         val quantity = if (cursor.moveToFirst()) {

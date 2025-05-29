@@ -12,4 +12,5 @@
     <color name="light_pink_text">#F35B2042</color>
     <color name="light_green">#D9C1EBB0</color>
     <color name="light_green_text">#F224490C</color>
+    <color name="secondText">#70778B</color>
 </resources>

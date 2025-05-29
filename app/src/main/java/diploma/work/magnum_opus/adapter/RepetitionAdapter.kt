@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import diploma.work.magnum_opus.R
 import diploma.work.magnum_opus.item.ItemOfRepetitionAdapter
@@ -65,7 +66,12 @@ class RepetitionAdapter(
             TYPE_TEXT -> {
                 val textViewHolder = holder as TextViewHolder
                 textViewHolder.tv.apply {
-                    text = content
+                    if (content.isNotBlank())
+                        text = content
+                    else {
+                        setTextColor(ContextCompat.getColor(context, R.color.secondText))
+                        text = "Содержимое пусто"
+                    }
                     setBackgroundColor(Color.WHITE)
                 }
 

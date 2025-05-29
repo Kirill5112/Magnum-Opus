@@ -62,12 +62,18 @@ class IntervalsActivity : AppCompatActivity(), ListActionListener,
             intervalsBtnDel.setOnClickListener {
                 val selectedItems = intervalsAdapter.getSelectedItems()
                 for (item in selectedItems) {
-                    val index = items.indexOf(item)
-                    if (index != -1) {
-                        items.removeAt(index)
-                        intervalsAdapter.notifyItemRemoved(index)
-                    }
-                    db.deleteIntervals(item.id)
+                    if (db.deleteIntervals(item.id)) {
+                        val index = items.indexOf(item)
+                        if (index != -1) {
+                            items.removeAt(index)
+                            intervalsAdapter.notifyItemRemoved(index)
+                        }
+                    } else
+                        Toast.makeText(
+                            this@IntervalsActivity,
+                            "Этот набор интервалов используется материалом, его нельзя удалить",
+                            Toast.LENGTH_SHORT
+                        ).show()
                 }
                 intervalsAdapter.clearSelection()
                 isSelectionMode(false)

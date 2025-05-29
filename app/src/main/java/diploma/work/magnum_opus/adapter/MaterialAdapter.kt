@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import diploma.work.magnum_opus.MainActivity.Companion.pressAnimation
 import diploma.work.magnum_opus.MaterialViewActivity
@@ -74,12 +75,17 @@ class MaterialAdapter(
                 toggleVisibilityBtn(false, viewHolder)
                 timerTV.text = "Завершено"
             }
-            textView.text = item.title
             itemView.apply {
                 isSelected = selectedItems.contains(position)
                 setBackgroundColor(
                     if (selectedItems.contains(position)) Color.LTGRAY else Color.WHITE
                 )
+                if (item.title.isNotBlank())
+                    textView.text = item.title
+                else{
+                    textView.setTextColor(ContextCompat.getColor(context, R.color.secondText))
+                    textView.text = "нет названия"
+                }
                 setOnClickListener {
                     if (isSelectionMode) {
                         selectionMode(position)
@@ -106,7 +112,7 @@ class MaterialAdapter(
                         context.startActivity(intent)
                     }
                 }
-                btnRep.setOnLongClickListener{
+                btnRep.setOnLongClickListener {
                     selectionMode(position)
                     notifyItemChanged(position)
                     true

@@ -69,15 +69,19 @@ class IntervalsAdapter(
                 }
 
                 setOnLongClickListener {
-                    selectionMode(position)
-                    notifyItemChanged(position)
+                    if (item.id != 1L) {
+                        selectionMode(position)
+                        notifyItemChanged(position)
+                    }
                     true
                 }
 
                 setOnClickListener {
                     if (isSelectionMode) {
-                        selectionMode(position)
-                        notifyItemChanged(position)
+                        if (item.id != 1L) {
+                            selectionMode(position)
+                            notifyItemChanged(position)
+                        }
                     } else {
                         val intent = Intent(context, IntervalsViewActivity::class.java)
                         intent.putExtra("EXTRA_INTERVALS_ID_LONG", item.id)

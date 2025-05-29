@@ -51,7 +51,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:color/transparent"
-            android:contentDescription="кнопка редактирования"
+            android:contentDescription="кнопка подтвердить редактирование"
             android:gravity="center_horizontal"
             android:src="@drawable/ic_confirmation_small"
             tools:ignore="HardcodedText,TouchTargetSizeCheck" />

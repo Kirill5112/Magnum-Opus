@@ -70,7 +70,7 @@
             android:fontFamily="@font/anuphan_medium"
             android:gravity="center"
             android:text="0 интервалов"
-            android:textColor="#70778B"
+            android:textColor="@color/secondText"
             android:textSize="20sp"
             tools:ignore="HardcodedText" />
 
