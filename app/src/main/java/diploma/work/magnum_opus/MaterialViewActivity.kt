@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -74,7 +75,7 @@ class MaterialViewActivity : AppCompatActivity() {
                 adapter = RepetitionAdapter(items, material.content)
                 applyWindowInsetsToRecyclerView(mvList, windowInsets)
             }
-            mvBtnLeft.setOnClickListener{
+            mvBtnLeft.setOnClickListener {
                 pressAnimation(it)
                 val intent = Intent(this@MaterialViewActivity, MainActivity::class.java)
                 startActivity(intent)
@@ -95,7 +96,16 @@ class MaterialViewActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
 
-                ID_EDIT -> editMaterial(material.id!!)
+                ID_EDIT -> {
+                    if (!material.isCompleted)
+                        editMaterial(material.id!!)
+                    else
+                        Toast.makeText(
+                            this,
+                            "Повторение материала уже завершено",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
             }
             return@setOnMenuItemClickListener true
         }
@@ -104,12 +114,16 @@ class MaterialViewActivity : AppCompatActivity() {
 
 
     private fun editMaterial(id: Long) {
+
         val intent = Intent(this@MaterialViewActivity, AdditionActivity::class.java)
         intent.putExtra("EXTRA_ID_LONG", id)
         startActivity(intent)
     }
 
-    private fun applyWindowInsetsToRecyclerView(recyclerView: RecyclerView, windowInsets: WindowInsetsCompat?) {
+    private fun applyWindowInsetsToRecyclerView(
+        recyclerView: RecyclerView,
+        windowInsets: WindowInsetsCompat?
+    ) {
         windowInsets?.let {
             val systemBars = it.getInsets(WindowInsetsCompat.Type.systemBars())
             recyclerView.updatePadding(bottom = systemBars.bottom)

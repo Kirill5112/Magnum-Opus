@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import diploma.work.magnum_opus.R
 import diploma.work.magnum_opus.RepetitionActivity
+import diploma.work.magnum_opus.db.DatabaseHelper
 
 class NotificationReceiver : BroadcastReceiver() {
     @SuppressLint("MissingPermission")
@@ -27,10 +28,12 @@ class NotificationReceiver : BroadcastReceiver() {
             repetitionIntent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val builder = NotificationCompat.Builder(context!!, "MagnumOpus")
+        val db = DatabaseHelper(context!!)
+        val material = db.getMaterialById(id)!!
+        val builder = NotificationCompat.Builder(context, "MagnumOpus")
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle("MagnumOpus")
-            .setContentText("Пришло время повторить материал $id")
+            .setContentText("Пришло время повторить материал \"${material.title}\"")
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

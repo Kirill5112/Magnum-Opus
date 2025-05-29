@@ -125,6 +125,7 @@ class RepetitionActivity : AppCompatActivity() {
             })
             repBtnEnd.setOnClickListener {
                 pressAnimation(it)
+                notificationManager.cancel((id % Int.MAX_VALUE).toInt())
                 val repetition = db.getLastRepetition(material.id!!)!!
                 repetition.timestamp = System.currentTimeMillis()
                 repetition.valuation = repSb.progress
@@ -157,6 +158,7 @@ class RepetitionActivity : AppCompatActivity() {
             }
             repBtnLeft.setOnClickListener {
                 pressAnimation(it)
+                notificationManager.cancel((id % Int.MAX_VALUE).toInt())
                 val intent = Intent(this@RepetitionActivity, MainActivity::class.java)
                 startActivity(intent)
             }

@@ -82,7 +82,6 @@ class InterAdapter(
             editBtn.setOnClickListener {
                 if (!isEditMode) {
                     isEditMode = true
-                    pressAnimation(it)
                     invertVisibility(holder)
                     number.setText(if (ems.size == 2) ems[0] else "0")
                     spinner.setSelection(pos)
@@ -146,7 +145,6 @@ class InterAdapter(
                 }
 
                 confirmBtn.setOnClickListener {
-                    pressAnimation(it)
                     val multiplayer =
                         when (measureUnit) {
                             "Минута" -> 1

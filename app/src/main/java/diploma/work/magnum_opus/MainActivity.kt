@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), ListActionListener {
                 btnNew.visibility = View.GONE
                 mainTitle.visibility = View.GONE
                 btnFilter.visibility = View.GONE
-                btnMore.visibility= View.GONE
+                btnMore.visibility = View.GONE
                 btnDel.visibility = View.VISIBLE
                 btnLeft.visibility = View.VISIBLE
                 mainCounter.visibility = View.VISIBLE
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity(), ListActionListener {
                 btnNew.visibility = View.VISIBLE
                 mainTitle.visibility = View.VISIBLE
                 btnFilter.visibility = View.VISIBLE
-                btnMore.visibility= View.VISIBLE
+                btnMore.visibility = View.VISIBLE
                 btnDel.visibility = View.GONE
                 btnLeft.visibility = View.GONE
                 mainCounter.visibility = View.GONE
@@ -257,7 +257,8 @@ class MainActivity : AppCompatActivity(), ListActionListener {
         val size = items.size
         items.clear()
         items.addAll(db.getItemsOfMaterialAdapterList(this@MainActivity))
-        materialAdapter.notifyItemRangeChanged(0, size)
+        val range = if (items.size > size) items.size else size
+        materialAdapter.notifyItemRangeChanged(0, range)
     }
 
     private fun createPopupMenuMore(
@@ -272,6 +273,7 @@ class MainActivity : AppCompatActivity(), ListActionListener {
                     val intent = Intent(this@MainActivity, SettingsActivity::class.java)
                     startActivity(intent)
                 }
+
                 ID_INTERVALS -> {
                     val intent = Intent(this@MainActivity, IntervalsActivity::class.java)
                     startActivity(intent)

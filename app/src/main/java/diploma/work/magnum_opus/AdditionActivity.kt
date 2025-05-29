@@ -7,11 +7,13 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import coil3.load
 import diploma.work.magnum_opus.MainActivity.Companion.pressAnimation
 import diploma.work.magnum_opus.RepetitionActivity.Companion.setAlarm
 import diploma.work.magnum_opus.databinding.ActivityAdditionBinding
@@ -55,22 +57,6 @@ class AdditionActivity : AppCompatActivity() {
         else
             null
         with(binding) {
-            if (materialEdit != null) {
-                additionTitle.setText(materialEdit.title)
-                multiLineEditText.setText(materialEdit.content)
-                btnAdd.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        this@AdditionActivity,
-                        R.drawable.ic_confirmation
-                    )
-                )
-            } else
-                btnAdd.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        this@AdditionActivity,
-                        R.drawable.ic_add
-                    )
-                )
             addBtnLeft.setOnClickListener {
                 val intent = Intent(this@AdditionActivity, MainActivity::class.java)
                 startActivity(intent)
@@ -131,6 +117,33 @@ class AdditionActivity : AppCompatActivity() {
                     }
                 }
             }
+            addBtnAttach.setOnClickListener {
+                imagePicker.launch("image/*")
+            }
+            if (materialEdit != null) {
+                additionTitle.setText(materialEdit.title)
+                multiLineEditText.setText(materialEdit.content)
+                addSpin.setSelection(listIntervals.indexOfFirst { i -> i.id == materialEdit.intervalsId })
+                btnAdd.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this@AdditionActivity,
+                        R.drawable.ic_confirmation
+                    )
+                )
+            } else
+                btnAdd.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this@AdditionActivity,
+                        R.drawable.ic_add
+                    )
+                )
         }
     }
+
+    private val imagePicker =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                binding.additionImage.load(uri)
+            }
+        }
 }

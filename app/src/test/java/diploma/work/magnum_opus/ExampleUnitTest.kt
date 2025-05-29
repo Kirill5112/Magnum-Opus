@@ -34,9 +34,9 @@ class ExampleUnitTest {
         assertEquals("01:01", getTimerTime(3_600_001))//1 час и 1 мс
         //assertEquals("07:56", getTimerTime(476 * 60 * 1000))
         //проверено 6 мая
-        assertEquals("7-го мая", getTimerTime(86_400_000))//через 24 часа(следующий день)
-        assertEquals("8-го мая", getTimerTime(86_400_000 * 2))//через 24 часа(следующий день)
-        assertEquals("13-го мая", getTimerTime(86_400_000 * 7))//через 7 дней
+//        assertEquals("7-го мая", getTimerTime(86_400_000))//через 24 часа(следующий день)
+//        assertEquals("8-го мая", getTimerTime(86_400_000 * 2))//через 24 часа(следующий день)
+//        assertEquals("13-го мая", getTimerTime(86_400_000 * 7))//через 7 дней
     }
 
     private fun getTimerTime(timeInMillis: Long): String {

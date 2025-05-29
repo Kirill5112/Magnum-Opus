@@ -1,6 +1,5 @@
 package diploma.work.magnum_opus.adapter
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.CountDownTimer
@@ -129,6 +128,7 @@ class MaterialAdapter(
     }
 
     private fun startCountDownTimer(viewHolder: ViewHolder, timeMillis: Long) {
+        viewHolder.timerTV.text = getTimerTime(timeMillis)
         timer = object : CountDownTimer(timeMillis, 1000 * 60) {
             override fun onTick(timeM: Long) {
                 viewHolder.timerTV.text = getTimerTime(timeM)

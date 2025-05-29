@@ -46,7 +46,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:contentDescription="@string/mv_btn_more"
+            android:visibility="invisible"
             android:src="@drawable/ic_more" />
+        <ImageView
+            android:id="@+id/add_btn_attach"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="Кнопка вложения"
+            android:src="@drawable/ic_attach"
+            android:visibility="gone"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
@@ -78,6 +88,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.03" />
 
+        <ImageView
+            android:id="@+id/addition_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            app:layout_constraintTop_toBottomOf="@id/addition_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
         <ScrollView
             android:id="@+id/addition_text"
             android:layout_width="match_parent"
@@ -87,7 +107,7 @@
             app:layout_constraintBottom_toTopOf="@+id/add_spin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addition_title">
+            app:layout_constraintTop_toBottomOf="@+id/addition_image">
 
             <EditText
                 android:id="@+id/multiLineEditText"
@@ -106,7 +126,6 @@
                 android:textSize="14sp"
                 tools:ignore="VisualLintLongText,VisualLintTextFieldSize" />
         </ScrollView>
-
 
         <ImageButton
             android:id="@+id/btn_add"
