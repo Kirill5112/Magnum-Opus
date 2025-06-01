@@ -122,6 +122,7 @@ class AdditionActivity : AppCompatActivity() {
             }
             if (materialEdit != null) {
                 additionTitle.setText(materialEdit.title)
+                addTitle.text = "Редактирование"
                 multiLineEditText.setText(materialEdit.content)
                 addSpin.setSelection(listIntervals.indexOfFirst { i -> i.id == materialEdit.intervalsId })
                 btnAdd.setImageDrawable(

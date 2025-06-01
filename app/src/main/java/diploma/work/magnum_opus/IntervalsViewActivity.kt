@@ -80,6 +80,16 @@ class IntervalsViewActivity : AppCompatActivity(), InterActionListener {
                 intervals.quantity = delays.size
                 interViewCount.text = getDeclinationText(delays.size)
             }
+            interViewNew.setOnClickListener{
+                delays.add(30L)
+                interAdapter.apply {
+                    notifyItemInserted(delays.size - 1)
+                    notifyItemChanged(delays.size - 2)
+                }
+                db.saveInter(id, delays.size, 30L)
+                intervals.quantity = delays.size
+                interViewCount.text = getDeclinationText(delays.size)
+            }
             intervalsViewInfo.setOnClickListener{
                 pressAnimation(it)
             }

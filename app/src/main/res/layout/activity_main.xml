@@ -29,9 +29,9 @@
             android:layout_weight="1"
             android:fontFamily="@font/anuphan_medium"
             android:gravity="center_vertical"
-            android:textIsSelectable="true"
             android:text="@string/app_name"
             android:textColor="@color/white"
+            android:textIsSelectable="true"
             android:textSize="20sp"
             android:visibility="visible" />
 
@@ -94,6 +94,25 @@
             app:srcCompat="@drawable/ic_delete" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/no_Materials_tv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:fontFamily="@font/anuphan_medium"
+        android:gravity="center_horizontal"
+        android:paddingTop="150dp"
+        android:text="Нет ни одного материала"
+        android:textColor="@color/secondText"
+        android:textIsSelectable="true"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_container"
+        tools:ignore="HardcodedText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"

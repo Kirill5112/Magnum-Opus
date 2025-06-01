@@ -30,6 +30,7 @@
             app:srcCompat="@drawable/ic_left" />
 
         <TextView
+            android:id="@+id/add_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

@@ -13,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.ScaleAnimation
 import android.widget.PopupMenu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +25,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import diploma.work.magnum_opus.settings.AppPreferences.completedIsHide
 import diploma.work.magnum_opus.MaterialViewActivity.Companion.deleteMaterial
 import diploma.work.magnum_opus.adapter.MaterialAdapter
@@ -73,11 +75,28 @@ class MainActivity : AppCompatActivity(), ListActionListener {
                 val intent = Intent(this@MainActivity, AdditionActivity::class.java)
                 startActivity(intent)
             }
+
+            /**
+             * меню только для btnMore кнопки
+             */
+            val more = createPopupMenuMore(btnMore)
+            btnMore.setOnClickListener {
+                pressAnimation(it)
+                more.show()
+            }
             val materialAdapter = MaterialAdapter(items, this@MainActivity)
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(this@MainActivity)
                 adapter = materialAdapter
             }
+            val filter = createPopupMenuFilter(btnFilter, materialAdapter)
+            btnFilter.setOnClickListener { pressAnimation(it); filter.show() }
+            if (items.isEmpty()) {
+                recyclerView.visibility = View.INVISIBLE
+                noMaterialsTv.visibility = View.VISIBLE
+                return
+            }
+
             btnDel.setOnClickListener {
                 val selectedItems = materialAdapter.getSelectedItems()
                 for (item in selectedItems) {
@@ -94,23 +113,6 @@ class MainActivity : AppCompatActivity(), ListActionListener {
             btnLeft.setOnClickListener {
                 materialAdapter.clearSelection()
                 isSelectionMode(false)
-            }
-            /**
-             * меню только для btnFilter кнопки
-             */
-            val filter =
-                createPopupMenuFilter(btnFilter, materialAdapter)
-            btnFilter.setOnClickListener {
-                pressAnimation(it)
-                filter.show()
-            }
-            /**
-             * меню только для btnMore кнопки
-             */
-            val more = createPopupMenuMore(btnMore)
-            btnMore.setOnClickListener {
-                pressAnimation(it)
-                more.show()
             }
         }
     }
@@ -266,6 +268,14 @@ class MainActivity : AppCompatActivity(), ListActionListener {
         items.addAll(db.getItemsOfMaterialAdapterList(this@MainActivity))
         val range = if (items.size > size) items.size else size
         materialAdapter.notifyItemRangeChanged(0, range)
+        if (items.isEmpty()) {
+            findViewById<RecyclerView>(R.id.recycler_view).visibility = View.INVISIBLE
+            findViewById<TextView>(R.id.no_Materials_tv).visibility = View.VISIBLE
+        }
+        else{
+            findViewById<RecyclerView>(R.id.recycler_view).visibility = View.VISIBLE
+            findViewById<TextView>(R.id.no_Materials_tv).visibility = View.INVISIBLE
+        }
     }
 
     private fun createPopupMenuMore(

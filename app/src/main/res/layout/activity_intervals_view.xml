@@ -84,6 +84,7 @@
             app:srcCompat="@drawable/ic_plus_black" />
 
         <TextView
+            android:id="@+id/inter_view_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/anuphan_medium"
