@@ -167,6 +167,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         values.put("content", material.content)
         val isCompleted = if (material.isCompleted) 1 else 0
         values.put("is_completed", isCompleted)
+        values.put("intervals_id", material.intervalsId)
         val rows = db.update("material", values, "id = ?", arrayOf("${material.id}"))
 
         return rows == 1

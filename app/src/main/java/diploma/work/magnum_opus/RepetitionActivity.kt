@@ -94,6 +94,8 @@ class RepetitionActivity : AppCompatActivity() {
         with(binding) {
             repTitle.text = material.title
             repMultiLineTextView.text = material.content
+            val text = "Вспомните как можно больше о '${material.title}'"
+            repHt.text = text
             repShowHide.setOnClickListener {
                 pressAnimation(it)
                 isHide = isHide.not()
@@ -104,7 +106,13 @@ class RepetitionActivity : AppCompatActivity() {
                         src
                     )
                 )
-                repSv.visibility = if (isHide) View.INVISIBLE else View.VISIBLE
+                if (isHide) {
+                    repContent.visibility = View.INVISIBLE
+                    rephintT.visibility = View.VISIBLE
+                } else {
+                    repContent.visibility = View.VISIBLE
+                    rephintT.visibility = View.INVISIBLE
+                }
             }
             repSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(

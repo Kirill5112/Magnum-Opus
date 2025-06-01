@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -115,7 +116,12 @@ class MainActivity : AppCompatActivity(), ListActionListener {
     }
 
     private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_DENIED
+        ) { // Android 13+
             val requestPermissionLauncher = registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
@@ -181,7 +187,8 @@ class MainActivity : AppCompatActivity(), ListActionListener {
         const val ID_SORT_DATE = 3
         const val ID_SORT_NAME = 4
         const val ID_SORT_TIMESTAMP = 5
-//        private const val ID_SETTINGS = 6
+
+        //        private const val ID_SETTINGS = 6
         private const val ID_INTERVALS = 7
 
         fun pressAnimation(view: View) {

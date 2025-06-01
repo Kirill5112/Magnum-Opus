@@ -39,8 +39,9 @@
             android:gravity="center"
             android:text="@string/title_row_item"
             android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textIsSelectable="true"/>
+            android:textIsSelectable="true"
+            android:textSize="20sp" />
+
         <ImageButton
             android:id="@+id/repShowHide"
             android:layout_width="48dp"
@@ -51,96 +52,122 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rephintT"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rep_container">
 
-
-    <ScrollView
-        android:id="@+id/repSv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.75"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
         <TextView
-            android:id="@+id/repMultiLineTextView"
+            android:id="@+id/rep_ht"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:gravity="center"
+            android:text="Вспомните как можно больше о 'TCP'"
+            android:textColor="#304FFE"
             android:textIsSelectable="true"
-            android:gravity="start"
-            android:padding="16dp"
-            android:scrollbars="vertical"
-            android:text="@string/many_text"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintHeight_percent="1.0"
-            tools:ignore="VisualLintLongText" />
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-    <SeekBar
-        android:id="@+id/repSb"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rep_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="@color/white"
-        android:indeterminate="false"
-        android:max="10"
-        android:progress="0"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repSv"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintTop_toBottomOf="@+id/rep_container">
 
-    <TextView
-        android:id="@+id/repSbTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/anuphan_medium"
-        android:text="0"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/repSb"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repSv"
-        app:layout_constraintVertical_bias="0.9"
-        tools:ignore="HardcodedText" />
+        <ScrollView
+            android:id="@+id/repSv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/repBtnEnd"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/btn_repeat"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repSb"
-        app:srcCompat="@drawable/ic_repeat" />
+            <TextView
+                android:id="@+id/repMultiLineTextView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="start"
+                android:padding="16dp"
+                android:scrollbars="vertical"
+                android:text="@string/many_text"
+                android:textColor="@color/black"
+                android:textIsSelectable="true"
+                android:textSize="16sp"
+                app:layout_constraintHeight_percent="1.0"
+                tools:ignore="VisualLintLongText" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/anuphan_medium"
-        android:text="@string/rep_bar_hint"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/repBtnEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repSb" />
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repSv">
+
+            <TextView
+                android:id="@+id/repSbTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/anuphan_medium"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                tools:ignore="HardcodedText" />
+
+            <SeekBar
+                android:id="@+id/repSb"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:indeterminate="false"
+                android:max="10"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/sb_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/anuphan_medium"
+                android:text="@string/rep_bar_hint"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/repBtnEnd"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/btn_repeat"
+                app:srcCompat="@drawable/ic_repeat" />
+
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
