@@ -50,7 +50,7 @@ class MaterialAdapter(
         if (selectedItems.contains(position)) {
             selectedItems.remove(position)
             listener.changeCounter(selectedItems.size)
-            if (selectedItems.size == 0) {
+            if (selectedItems.isEmpty()) {
                 isSelectionMode = false
                 listener.isSelectionMode(false)
             }

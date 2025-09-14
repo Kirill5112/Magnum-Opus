@@ -456,4 +456,30 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "storage", nu
         cursor.close()
         return delays
     }
+
+    /*fun searchMaterials(find: String): MutableList<ItemOfMaterialAdapter> {
+        val db = readableDatabase
+        val items = mutableListOf<ItemOfMaterialAdapter>()
+        val search = find.lowercase()
+        val cursor = db.rawQuery("""
+            SELECT *
+            FROM material
+            WHERE content LIKE '?%' OR title LIKE '?%'
+        """.trimIndent()
+            , arrayOf(search)
+        )
+        if (cursor.moveToFirst()) {
+            do {
+                val item = ItemOfMaterialAdapter(
+                    id = cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                    title = cursor.getString(cursor.getColumnIndexOrThrow("title")),
+                    timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")),
+                    isCompleted = cursor.getInt(cursor.getColumnIndexOrThrow("is_completed")) == 1
+                )
+                items.add(item)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return items
+    }*/
 }

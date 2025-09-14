@@ -216,8 +216,8 @@ class MainActivity : AppCompatActivity(), ListActionListener {
 
         val hideCompletedItem =
             popupMenu.menu.add(1, ID_HIDE_COMPLETED, Menu.NONE, "Скрыть завершённые")
-        hideCompletedItem.setCheckable(true)
-        hideCompletedItem.setChecked(completedIsHide)
+        hideCompletedItem.isCheckable = true
+        hideCompletedItem.isChecked = completedIsHide
         val sortSubMenu = popupMenu.menu.addSubMenu(3, ID_SORT, Menu.NONE, "Сортировка")
         sortSubMenu.add(3, ID_SORT_DATE, Menu.NONE, "По дате")
         sortSubMenu.add(3, ID_SORT_NAME, Menu.NONE, "По названию")

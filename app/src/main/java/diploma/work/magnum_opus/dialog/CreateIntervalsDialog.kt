@@ -22,30 +22,29 @@ class CreateIntervalsDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.dialog_create_intervals, null)
+        val activity = requireActivity()
+        val builder = AlertDialog.Builder(activity)
+        val inflater = activity.layoutInflater
+        val view = inflater.inflate(R.layout.dialog_create_intervals, null)
 
-            val editDeckName = view.findViewById<EditText>(R.id.edit_deck_name)
-            val btnOk = view.findViewById<Button>(R.id.btnOk)
-            val btnCancel = view.findViewById<Button>(R.id.btnCancel)
+        val editDeckName = view.findViewById<EditText>(R.id.edit_deck_name)
+        val btnOk = view.findViewById<Button>(R.id.btnOk)
+        val btnCancel = view.findViewById<Button>(R.id.btnCancel)
 
-            btnOk.setOnClickListener {
-                val title = editDeckName.text.toString()
-                if (title.isNotEmpty()) {
-                    mListener.onIntervalsCreated(title)
-                    dismiss()
-                }
-            }
-
-            btnCancel.setOnClickListener {
+        btnOk.setOnClickListener {
+            val title = editDeckName.text.toString()
+            if (title.isNotEmpty()) {
+                mListener.onIntervalsCreated(title)
                 dismiss()
             }
+        }
 
-            builder.setView(view)
-            builder.setTitle(null)
-            return builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        btnCancel.setOnClickListener {
+            dismiss()
+        }
+
+        builder.setView(view)
+        builder.setTitle(null)
+        return builder.create()
     }
 }

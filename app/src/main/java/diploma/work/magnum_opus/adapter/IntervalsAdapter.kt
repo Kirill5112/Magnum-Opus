@@ -27,7 +27,7 @@ class IntervalsAdapter(
         val btn: ImageButton = view.findViewById(R.id.intervalsBtn)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IntervalsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.intervals_item, parent, false)
         return ViewHolder(view)
@@ -37,7 +37,7 @@ class IntervalsAdapter(
         if (selectedItems.contains(position)) {
             selectedItems.remove(position)
             listener.changeCounter(selectedItems.size)
-            if (selectedItems.size == 0) {
+            if (selectedItems.isEmpty()) {
                 isSelectionMode = false
                 listener.isSelectionMode(false)
             }
@@ -51,7 +51,7 @@ class IntervalsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: IntervalsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         holder.apply {
             title.text = item.title

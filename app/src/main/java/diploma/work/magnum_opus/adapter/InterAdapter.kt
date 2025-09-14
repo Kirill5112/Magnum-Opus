@@ -73,7 +73,7 @@ class InterAdapter(
                 0
             deleteBtn.setOnClickListener {
                 pressAnimation(it)
-                listener.deleteInter(adapterPosition + 1)
+                listener.deleteInter(bindingAdapterPosition + 1)
             }
             if (position != items.size - 1 || position == 0)
                 deleteBtn.visibility = View.GONE
@@ -155,7 +155,7 @@ class InterAdapter(
                         }
                     val delay = number.text.toString().toLongOrNull()?.times(multiplayer)
                     if (delay != null)
-                        listener.saveInter(adapterPosition + 1, delay)
+                        listener.saveInter(bindingAdapterPosition + 1, delay)
                     invertVisibility(holder)
                     isEditMode = false
                 }

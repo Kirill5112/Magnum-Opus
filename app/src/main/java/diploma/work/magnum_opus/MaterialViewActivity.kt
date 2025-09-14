@@ -34,6 +34,7 @@ class MaterialViewActivity : AppCompatActivity() {
     companion object {
         private const val ID_REMOVE = 1
         private const val ID_EDIT = 2
+        private const val ID_SCROLL = 3
 
         fun deleteMaterial(context: Context, id: Long) {
             val db = DatabaseHelper(context)
@@ -67,14 +68,14 @@ class MaterialViewActivity : AppCompatActivity() {
         with(binding) {
             if (material.title.isNotBlank())
                 matViewTitle.text = material.title
-            more.setOnClickListener {
-                pressAnimation(it)
-                showPopupMenu(more, material)
-            }
             mvList.apply {
                 layoutManager = LinearLayoutManager(this@MaterialViewActivity)
                 adapter = RepetitionAdapter(items, material.content)
                 applyWindowInsetsToRecyclerView(mvList, windowInsets)
+            }
+            more.setOnClickListener {
+                pressAnimation(it)
+                showPopupMenu(more, material, mvList)
             }
             mvBtnLeft.setOnClickListener {
                 pressAnimation(it)
@@ -84,11 +85,13 @@ class MaterialViewActivity : AppCompatActivity() {
         }
     }
 
-    private fun showPopupMenu(view: View, material: StudyMaterial) {
+    private fun showPopupMenu(view: View, material: StudyMaterial, mvList: RecyclerView) {
         val popupMenu = PopupMenu(view.context, view)
 
         popupMenu.menu.add(0, ID_REMOVE, Menu.NONE, "Удалить")
         popupMenu.menu.add(0, ID_EDIT, Menu.NONE, "Редактировать")
+        if (mvList.adapter!!.itemCount >= 4)
+            popupMenu.menu.add(0, ID_SCROLL, Menu.NONE, "К таблице")
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 ID_REMOVE -> {
@@ -106,6 +109,10 @@ class MaterialViewActivity : AppCompatActivity() {
                             "Повторение материала уже завершено",
                             Toast.LENGTH_SHORT
                         ).show()
+                }
+
+                ID_SCROLL -> {
+                    mvList.smoothScrollToPosition(mvList.adapter!!.itemCount - 2)
                 }
             }
             return@setOnMenuItemClickListener true

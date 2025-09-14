@@ -2,7 +2,6 @@ package diploma.work.magnum_opus.settings
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
 import diploma.work.magnum_opus.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
